@@ -251,6 +251,77 @@ void run()
 
 ----
 
+
+[source,c]
+----
+
+/**
+ * @file distance_sensor.h
+ * @brief distance sensor driver definition for the Michelino robot.
+ * @author Miguel Grinberg
+ */
+
+namespace Michelino
+{
+    class DistanceSensorDriver
+    {
+    public:
+        /**
+          * @brief Class constructor.
+          * @param distance The maximum distance in centimeters that needs to be tracked.
+          */
+        DistanceSensorDriver(unsigned int distance) : maxDistance(distance) {}
+
+        /**
+         * @brief Return the distance to the nearest obstacle in centimeters.
+         * @return the distance to the closest object in centimeters 
+         *   or maxDistance if no object was detected
+         */
+        virtual unsigned int getDistance() = 0;
+
+    protected:
+        unsigned int maxDistance;
+    };
+};
+
+----
+
+[source,c]
+----
+/**
+ * @file newping_distance_sensor.h
+ * @brief distance sensor driver for distance sensors supported by the NewPing library.
+ * @author Miguel Grinberg
+ */
+
+#include "distance_sensor.h"
+
+namespace Michelino
+{
+    class DistanceSensor : public DistanceSensorDriver
+    {
+    public:
+        DistanceSensor(int triggerPin, int echoPin, int maxDistance)
+            : DistanceSensorDriver(maxDistance), 
+              sensor(triggerPin, echoPin, maxDistance)
+        {
+        }
+
+        virtual unsigned int getDistance()
+        {
+            int distance = sensor.ping_cm();
+            if (distance <= 0)
+                return maxDistance;
+            return distance;
+        }
+    private:
+        NewPing sensor;
+    };
+};
+
+----
+
+
 == Level 1 Section Title
 
 === Level 2 Section Title
