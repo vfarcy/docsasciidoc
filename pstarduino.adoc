@@ -1,0 +1,228 @@
+= My Document's Title
+My document provides...
+
+Valéry Farcy farcy@esiea.fr
+
+v1.0, 2014-01-01
+
+:toc:
+
+:imagesdir: assets/images
+
+:homepage: http://asciidoctor.org
+
+
+This text will be styled as a lead paragraph (i.e., larger font).
+
+Blabla
+
+'''
+
+video::rPQoq7ThGAU[youtube]
+
+[source,c]
+----
+require 'asciidoctor'  # <1>
+
+Asciidoctor.convert_file 'mysample.adoc'  # <2>
+
+
+/**
+ * @file motor_driver.h
+ * @brief Motor device driver definition for the Michelino robot.
+ * @author Miguel Grinberg
+ */
+
+namespace Michelino
+{
+    class MotorDriver
+    {
+    public:
+        /**
+         * @brief Change the speed of the motor.
+         * @param speed The new speed of the motor.
+         *  Valid values are between -255 and 255. 
+         *  Use positive values to run the motor forward, 
+         *  negative values to run it backward and zero to stop the motor.
+         */
+        virtual void setSpeed(int speed) = 0;
+
+        /**
+         * @brief Return the current speed of the motor.
+         * @return The current speed of the motor with range -255 to 255.
+         */
+        virtual int getSpeed() const = 0;            
+    };
+};
+
+----
+<1> Imports the library
+<2> Reads, parses and renders the file
+
+[source,c]
+----
+
+/**
+ * @file adafruit_motor_driver.h
+ * @brief Motor device driver for the Adafruit motor shield.
+ * @author Miguel Grinberg
+ */
+
+#include "motor_driver.h"
+
+namespace Michelino
+{
+    class Motor : public MotorDriver
+    {
+    public:
+        /*
+         * @brief Class constructor.
+         * @param number the DC motor number to control, from 1 to 4.
+         */
+        Motor(int number)
+            : MotorDriver(), motor(number), currentSpeed(0)
+        {
+        }
+
+        void setSpeed(int speed)
+        {
+            currentSpeed = speed;
+            if (speed >= 0) {
+                motor.setSpeed(speed);
+                motor.run(FORWARD);
+            }
+            else {
+                motor.setSpeed(-speed);
+                motor.run(BACKWARD);
+            }
+        }
+
+        int getSpeed() const
+        {
+            return currentSpeed;
+        }
+
+    private:
+        AF_DCMotor motor;
+        int currentSpeed;
+    };
+};
+----
+
+[source,c]
+----
+// enable one of the motor shields below
+//#define ENABLE_ADAFRUIT_MOTOR_DRIVER
+#define ENABLE_X_MOTOR_DRIVER
+
+#ifdef ENABLE_ADAFRUIT_MOTOR_DRIVER
+#include <AFMotor.h>
+#include "adafruit_motor_driver.h"
+#define MOTOR_INIT 1
+#endif
+
+#ifdef ENABLE_X_MOTOR_DRIVER
+#include <XMotor.h>
+#include "x_motor_driver.h"
+#define MOTOR_INIT 2
+#endif
+
+Michelino::Motor motor(MOTOR_INIT);
+
+void setup()
+{
+    motor.setSpeed(255);
+}
+
+void loop()
+{
+}
+----
+
+
+[source,c]
+----
+/**
+ * @file michelino.ino
+ * @brief Arduino robot vehicle firmware.
+ * @author Miguel Grinberg
+ */
+
+#define ENABLE_ADAFRUIT_MOTOR_DRIVER
+
+#ifdef ENABLE_ADAFRUIT_MOTOR_DRIVER
+#include <AFMotor.h>
+#include "adafruit_motor_driver.h"
+#define LEFT_MOTOR_INIT 1
+#define RIGHT_MOTOR_INIT 3
+#endif
+
+namespace Michelino
+{
+    class Robot
+    {
+    public:
+        /*
+         * @brief Class constructor.
+         */
+        Robot()
+            : leftMotor(LEFT_MOTOR_INIT), rightMotor(RIGHT_MOTOR_INIT)
+        {
+            initialize();
+        }
+
+        /*
+         * @brief Initialize the robot state.
+         */
+        void initialize()
+        {
+            leftMotor.setSpeed(255);
+            rightMotor.setSpeed(255);
+        }
+
+        /*
+         * @brief Update the state of the robot based on input from sensor and remote control.
+         *  Must be called repeatedly while the robot is in operation.
+         */
+        void run()
+        {
+        }
+
+    private:
+        Motor leftMotor;
+        Motor rightMotor;
+    };
+};
+
+Michelino::Robot robot;
+
+void setup()
+{
+    robot.initialize();
+}
+
+void loop()
+{
+    robot.run();
+}
+----
+
+
+== Level 1 Section Title
+
+=== Level 2 Section Title
+
+==== Level 3 Section Title
+
+===== Level 4 Section Title
+
+====== Level 5 Section Title
+
+== Another Level 1 Section Title
+
+
+
+
+
+
+
