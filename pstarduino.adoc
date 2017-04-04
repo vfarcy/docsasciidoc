@@ -216,8 +216,6 @@ void loop()
 
 ===== Level 4 Section Title
 
-====== Level 5 Section Title
-
 == Another Level 1 Section Title
 
 
@@ -225,4 +223,5 @@ void loop()
 
 
 
+// vim: set syntax=asciidoc:
 
