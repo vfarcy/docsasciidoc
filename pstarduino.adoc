@@ -211,6 +211,45 @@ void loop()
 }
 ----
 
+I'm going to make the robot start by waiting for five seconds, then moving forward for eight seconds, then repeating the cycle.
+
+
+[source,c]
+----
+
+private:
+unsigned long startTime;
+void initialize()
+{
+    state = stateStopped;
+    startTime = millis();
+}
+
+void run()
+{
+    unsigned long currentTime = millis();
+    unsigned long elapsedTime = currentTime - startTime;
+    switch (state) {
+    case stateStopped:
+        if (elapsedTime >= 5000) {
+            leftMotor.setSpeed(255);
+            rightMotor.setSpeed(255);
+            state = stateRunning;
+            startTime = currentTime;
+        }
+        break;
+    case stateRunning:
+        if (elapsedTime >= 8000) {
+            leftMotor.setSpeed(0);
+            rightMotor.setSpeed(0);
+            state = stateStopped;
+            startTime = currentTime;
+        }
+        break;
+    }
+ }
+
+----
 
 == Level 1 Section Title
 
