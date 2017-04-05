@@ -225,3 +225,6 @@ void loop()
 
 ----
 
+
+// vim: set syntax=asciidoc:
+
