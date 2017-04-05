@@ -1,0 +1,227 @@
+Slidy backend for AsciiDoc
+==========================
+:author:    Stuart Rackham
+:backend:   slidy
+:max-width: 45em
+:data-uri:
+:icons:
+
+
+Use the following command to create this document (`slidy.html`):
+
+  asciidoc slidy.txt
+
+.Optional Title
+[NOTE]
+This is an example
+single-paragraph note.
+
+Press the 'Space' key or the 'Left Arrow' key to continue the
+slideshow.
+
+
+Overview
+--------
+AsciiDoc has a 'slidy' backend for generating self contained 'Slidy'
+HTML slideshows.
+
+- An overview of 'Slidy' can be found here:
+  http://www.w3.org/Talks/Tools/Slidy2/
+- AsciiDoc ships with the Slidy JavaScript a customised Slidy CSS
+  file.
+- Use the 'asciidoc' `--backend slidy` command-line option to generate
+  browser viewable HTML slideshow. Example:
+
+  asciidoc --backend slidy slidy-example.txt
+
+- By default, 'asciidoc' creates a self contained distributable HTML
+  document which includes all necessary CSS and JavaScripts.  Use the
+  'asciidoc' `--attribute linkcss` command-line option if you prefer
+  to link (rather than embed) external CSS and JavaScript files.
+
+
+How Slidy uses AsciiDoc markup
+------------------------------
+- The document header is displayed as the first page of the slideshow.
+- If the document has a 'preamble' (the content between the header and
+  the first section) it will be displayed on the second page.
+- Each top level section is displayed as a separate slide.
+- If the AsciiDoc 'incremental' attribute is defined then all lists
+  and OpenBlock elements are treated as 'incremental' i.e. Slidy
+  exposes their child elements one at a time as you progress through
+  the slideshow.
+- You can explicitly set an element as incremental by setting its
+  'role' attribute to 'incremental'. Example:
+
+  [role="incremental"]
+  Sagittis in vestibulum. Habitasse ante nulla enim bibendum nulla.
+  Odio sed pede litora.
+
+
+Slidy Specific Attributes
+-------------------------
+incremental::
+If this attribute is defined then all lists and OpenBlock elements are
+classed as incremental i.e. Slidy will expose them one at a time as
+you progress through the slideshow.  The default behavior is for the
+show to progress a full slide at at time.  Elements that have been
+explicitly classed as 'incremental' with the 'role' attribute are
+always displayed incrementally.
+
+duration::
+Set this to the estimated number of minutes that your presentation
+will take and Slidy will display a countdown timer at the bottom right
+of the slideshow. For example, this 'asciidoc' command-line option
+`--attribute duration=5` sets the duration to five minutes.
+
+copyright::
+If you set the 'copyright' attribute it will be displayed in the Slidy
+menu bar at the bottom of the slide. If the 'copyright' attribute is
+not define then the author name, if it is defined, will be displayed.
+
+outline::
+Setting the 'role' attribute to 'outline' in a bulleted or numbered
+list allows nested lists to be expanded and collapsed using the mouse.
+Nested lists are expanded when an enclosing list item (the ones with
+blue bullet points or numbers) is clicked.
+
+
+Stylesheets
+-----------
+- 'slidy' loads the 'asciidoc.css' stylesheet followed by 'slidy.css':
+  * `asciidoc.css` contains content presentational styles.
+  * The customized `slidy.css` stylesheet contains Slidy specific
+    styles (table of contents, menu and transition related).
+- You can use AsciiDoc CSS themes. For example, the 'asciidoc'
+  `--attribute theme=volnitsky` command-line option will substitute
+  the `asciidoc.css` stylesheet for the distributed Volnitsky
+  `volnitsky.css` stylesheet.
+- An additional stylesheet can be specified by setting the
+  'stylesheet' attribute. For example, the `--attribute
+  stylesheet=myslidy.css` will load `myslidy.css` after the standard
+  CSS files.
+
+
+Tips
+----
+- The Slidy 'help?' and 'contents?' links at the bottom left are your
+  friends.
+- Use the AsciiDoc 'data-uri' attribute to embed images in your
+  slideshow -- add this attribute entry to your document's header:
+
+  :data-uri:
+
+- Use the AsciiDoc 'max-width' attribute to set the document display
+  width. For example, add this attribute entry to your document's
+  header:
+
+  :max-width: 45em
+
+Tips
+----
+
+[source,c]
+----
+
+/*
+  Blink
+  Turns on an LED on for one second, then off for one second, repeatedly.
+ 
+  This example code is in the public domain.
+*/
+ 
+// Pin 13 has an LED connected on most Arduino boards.
+// give it a name:
+int led = 13;
+
+// the setup routine runs once when you press reset:
+void setup() {                
+  // initialize the digital pin as an output.
+  pinMode(led, OUTPUT);     
+}
+
+// the loop routine runs over and over again forever:
+void loop() {
+  digitalWrite(led, HIGH);   // turn the LED on (HIGH is the voltage level)
+  delay(1000);               // wait for a second
+  digitalWrite(led, LOW);    // turn the LED off by making the voltage LOW
+  delay(1000);               // wait for a second
+}
+    
+----
+
+
+Tips
+----
+
+
+[source,c]
+----
+
+/* Blink without Delay
+ 
+ Turns on and off a light emitting diode(LED) connected to a digital  
+ pin, without using the delay() function.  This means that other code
+ can run at the same time without being interrupted by the LED code.
+ 
+ The circuit:
+ * LED attached from pin 13 to ground.
+ * Note: on most Arduinos, there is already an LED on the board
+ that's attached to pin 13, so no hardware is needed for this example.
+ 
+ 
+ created 2005
+ by David A. Mellis
+ modified 8 Feb 2010
+ by Paul Stoffregen
+ 
+ This example code is in the public domain.
+
+ 
+ http://www.arduino.cc/en/Tutorial/BlinkWithoutDelay
+ */
+
+// constants won't change. Used here to 
+// set pin numbers:
+const int ledPin =  13;      // the number of the LED pin
+
+// Variables will change:
+int ledState = LOW;             // ledState used to set the LED
+long previousMillis = 0;        // will store last time LED was updated
+
+// the follow variables is a long because the time, measured in miliseconds,
+// will quickly become a bigger number than can be stored in an int.
+long interval = 1000;           // interval at which to blink (milliseconds)
+
+void setup() {
+  // set the digital pin as output:
+  pinMode(ledPin, OUTPUT);      
+}
+
+void loop()
+{
+  // here is where you'd put code that needs to be running all the time.
+
+  // check to see if it's time to blink the LED; that is, if the 
+  // difference between the current time and last time you blinked 
+  // the LED is bigger than the interval at which you want to 
+  // blink the LED.
+  unsigned long currentMillis = millis();
+ 
+  if(currentMillis - previousMillis > interval) {
+    // save the last time you blinked the LED 
+    previousMillis = currentMillis;   
+
+    // if the LED is off turn it on and vice-versa:
+    if (ledState == LOW)
+      ledState = HIGH;
+    else
+      ledState = LOW;
+
+    // set the LED with the ledState of the variable:
+    digitalWrite(ledPin, ledState);
+  }
+}
+
+----
+
