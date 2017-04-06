@@ -1,6 +1,6 @@
 Slidy backend for AsciiDoc
 ==========================
-:author:    Stuart Rackham
+:author:    Valéry Farcy
 :backend:   slidy
 :max-width: 45em
 :data-uri:
@@ -117,8 +117,8 @@ Tips
 
   :max-width: 45em
 
-Tips
-----
+Normal blink
+------------
 
 [source,c]
 ----
@@ -151,8 +151,8 @@ void loop() {
 ----
 
 
-Tips
-----
+Blink without delay
+-------------------
 
 
 [source,c]
@@ -226,8 +226,8 @@ void loop()
 ----
 
 
-Tips
-----
+A classy solution
+-----------------
 
 
 [source,c]
